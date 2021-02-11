@@ -18,6 +18,8 @@ import (
 // homePage servers the default page for scribble.rs, which is the page to
 // create a new lobby.
 func homePage(w http.ResponseWriter, r *http.Request) {
+	setTranslation(r)
+
 	err := lobbyCreatePage.ExecuteTemplate(w, "lobby_create.html", createDefaultLobbyCreatePageData())
 	if err != nil {
 		http.Error(w, err.Error(), http.StatusInternalServerError)
@@ -27,7 +29,7 @@ func homePage(w http.ResponseWriter, r *http.Request) {
 func createDefaultLobbyCreatePageData() *CreatePageData {
 	return &CreatePageData{
 		SettingBounds:          game.LobbySettingBounds,
-		Languages:              game.SupportedLanguages,
+		Languages:              getTranslatedSupportedLanguages(),
 		Public:                 "false",
 		DrawingTime:            "120",
 		Rounds:                 "4",
@@ -57,6 +59,11 @@ type CreatePageData struct {
 	CurrentlyActiveLobbies int
 }
 
+func (l CreatePageData) Translate(message string) string {
+	translated := Translator.DefTr(message)
+	return translated
+}
+
 // ssrCreateLobby allows creating a lobby, optionally returning errors that
 // occurred during creation.
 func ssrCreateLobby(w http.ResponseWriter, r *http.Request) {
@@ -65,6 +72,8 @@ func ssrCreateLobby(w http.ResponseWriter, r *http.Request) {
 		http.Error(w, formParseError.Error(), http.StatusBadRequest)
 		return
 	}
+
+	setTranslation(r)
 
 	language, languageInvalid := parseLanguage(r.Form.Get("language"))
 	drawingTime, drawingTimeInvalid := parseDrawingTime(r.Form.Get("drawing_time"))
@@ -79,7 +88,7 @@ func ssrCreateLobby(w http.ResponseWriter, r *http.Request) {
 	//Prevent resetting the form, since that would be annoying as hell.
 	pageData := CreatePageData{
 		SettingBounds:          game.LobbySettingBounds,
-		Languages:              game.SupportedLanguages,
+		Languages:              getTranslatedSupportedLanguages(),
 		Public:                 r.Form.Get("public"),
 		DrawingTime:            r.Form.Get("drawing_time"),
 		Rounds:                 r.Form.Get("rounds"),

@@ -39,6 +39,16 @@ var (
 		"french":  "French",
 		"dutch":   "Dutch",
 	}
+	
+	TranslationFiles = map[string]string{
+		"en": "English",
+		"de": "German",
+	}
+
+	TranslationMatcher = language.NewMatcher([]language.Tag{
+		language.English,
+		language.German,
+	})
 )
 
 const (

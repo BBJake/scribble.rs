@@ -6,14 +6,18 @@ import (
 	"html"
 	"net/http"
 	"strings"
+	"log"
 
 	"github.com/scribble-rs/scribble.rs/game"
 	"github.com/scribble-rs/scribble.rs/state"
+	"github.com/gookit/i18n"
+	"golang.org/x/text/language"
 )
 
 var (
 	errNoLobbyIDSupplied = errors.New("please supply a lobby id via the 'lobby_id' query parameter")
 	errLobbyNotExistent  = errors.New("the requested lobby doesn't exist")
+	Translator = i18n.NewEmpty()
 )
 
 func getLobby(r *http.Request) (*game.Lobby, error) {
@@ -145,11 +149,19 @@ func createLobbyData(lobbyID string) *LobbyData {
 	}
 }
 
+func (l LobbyData) Translate(message string) string {
+	translated := Translator.DefTr(message)
+	return translated
+}
+
 // ssrEnterLobby opens a lobby, either opening it directly or asking for a lobby.
 func ssrEnterLobby(w http.ResponseWriter, r *http.Request) {
+
+	setTranslation(r)
+
 	lobby, err := getLobby(r)
 	if err != nil {
-		userFacingError(w, err.Error())
+		userFacingError(w, Translator.DefTr(err.Error()))
 		return
 	}
 
@@ -172,7 +184,7 @@ func ssrEnterLobby(w http.ResponseWriter, r *http.Request) {
 
 	if player == nil {
 		if !lobby.HasFreePlayerSlot() {
-			userFacingError(w, "Sorry, but the lobby is full.")
+			userFacingError(w, Translator.DefTr("Sorry, but the lobby is full."))
 			return
 		}
 
@@ -182,7 +194,7 @@ func ssrEnterLobby(w http.ResponseWriter, r *http.Request) {
 			if otherPlayer.GetLastKnownAddress() == requestAddress {
 				clientsWithSameIP++
 				if clientsWithSameIP >= lobby.ClientsPerIPLimit {
-					userFacingError(w, "Sorry, but you have exceeded the maximum number of clients per IP.")
+					userFacingError(w, Translator.DefTr("Sorry, but you have exceeded the maximum number of clients per IP."))
 					return
 				}
 			}
@@ -199,7 +211,7 @@ func ssrEnterLobby(w http.ResponseWriter, r *http.Request) {
 		})
 	} else {
 		if player.Connected && player.GetWebsocket() != nil {
-			userFacingError(w, "It appears you already have an open tab for this lobby.")
+			userFacingError(w, Translator.DefTr("It appears you already have an open tab for this lobby."))
 			return
 		}
 		player.SetLastKnownAddress(getIPAddressFromRequest(r))
@@ -242,4 +254,36 @@ func getIPAddressFromRequest(r *http.Request) string {
 	}
 
 	return remoteAddressToSimpleIP(r.RemoteAddr)
+}
+
+func setTranslation(r *http.Request) {
+	accept := r.Header.Get("Accept-Language")
+	tags, _, _ := language.ParseAcceptLanguage(accept)
+	lang := game.TranslationFiles["en"]
+
+	tag, _, _ := game.TranslationMatcher.Match(tags...)
+	base, _ := tag.Base()
+	log.Printf("%s (t: %6v)\n", base.String(), tags)
+
+	if game.TranslationFiles[base.String()]!="" {
+		lang = base.String()
+	}
+
+	log.Printf("Using translation %s",lang)
+	
+	Translator = i18n.NewWithInit("lang", lang, game.TranslationFiles)
+	Translator.TransMode = i18n.ReplaceMode;
+
+	//Translate.DefaultLang = accept
+}
+
+
+
+func getTranslatedSupportedLanguages() map[string]string {
+
+	result := make(map[string]string)
+	for languageKey,languageName := range game.SupportedLanguages {
+		result[languageKey] = Translator.DefTr(languageName);
+	}
+	return result
 }

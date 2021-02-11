@@ -22,24 +22,24 @@
                 have a uniform look with the other buttons in the header, we are not using
                 a checkbox anymore. -->
                 <button onclick="toggleSound()" class="dialog-button header-button"
-                        alt="Toggle soundeffects" title="Toggle soundeffects">
+                        alt="Toggle soundeffects" title="{{.Translate "Toggle soundeffects"}}">
                     <img id="sound-toggle-label" class="header-button-image"/>
                 </button>
 
                 <button onclick="showKickDialog()" class="dialog-button header-button"
-                        alt="Votekick a player" title="Votekick a player">
+                        alt="Votekick a player" title="{{.Translate "Votekick a player"}}">
                     <img src="/resources/kick.png" class="header-button-image"/>
                 </button>
 
                 <button onclick="showNameChangeDialog()" class="dialog-button header-button"
-                        alt="Change your name" title="Change your name">
+                        alt="Change your name" title="{{.Translate "Change your name"}}">
                     <img src="/resources/user.svg" class="header-button-image"/>
                 </button>
             </div>
             <div id="word-container" style="position:absolute;left: 50%; transform: translate(-50%, 0);"></div>
         </div>
 
-        <span id="time-left">Time Left: ∞</span>
+        <span id="time-left">{{.Translate "Time Left"}}: ∞</span>
 
         <div id="player-container"></div>
 
@@ -56,7 +56,7 @@
                 <div id="center-dialogs">
                     <div id="center-dialog-container">
                         <div id="word-dialog" class="center-dialog">
-                            <span class="dialog-title">Choose a word</span>
+                            <span class="dialog-title">{{.Translate "Choose a word"}}</span>
                             <div class="center-dialog-content">
                                 <div class="word-button-container">
                                     <button id="word-button-zero" class="dialog-button" onclick="chooseWord(0)">Placeholder
@@ -72,49 +72,49 @@
 
                     <div id="center-dialog-container">
                         <div id="start-dialog" class="center-dialog">
-                            <span class="dialog-title">Start the game</span>
+                            <span class="dialog-title">{{.Translate "Start the game"}}</span>
                             <div class="center-dialog-content">
-                                <button class="dialog-button" onclick="startGame()">Start</button>
+                                <button class="dialog-button" onclick="startGame()">{{.Translate "Start"}}</button>
                             </div>
                         </div>
                     </div>
 
                     <div id="center-dialog-container">
                         <div id="unstarted-dialog" class="center-dialog">
-                            <span class="dialog-title">Game hasn't started</span>
+                            <span class="dialog-title">{{.Translate "Game hasn't started"}}</span>
                             <div class="center-dialog-content">
-                                Please wait for your lobby host to start the game.
+                                {{.Translate "Please wait for your lobby host to start the game"}}.
                             </div>
                         </div>
                     </div>
 
                     <div id="center-dialog-container">
                         <div id="game-over-dialog" class="center-dialog">
-                            <span id="game-over-dialog-title" class="dialog-title">Game over!</span>
+                            <span id="game-over-dialog-title" class="dialog-title">{{.Translate "Game over!"}}</span>
                             <div id="game-over-scoreboard"></div>
-                            <button id="restart-button" class="dialog-button" onclick="startGame()">Restart</button>
+                            <button id="restart-button" class="dialog-button" onclick="startGame()">{{.Translate "Restart"}}</button>
                         </div>
                     </div>
 
                     <div id="center-dialog-container">
                         <div id="kick-dialog" class="center-dialog">
-                            <span class="dialog-title">Vote to kick a player</span>
+                            <span class="dialog-title">{{.Translate "Vote to kick a player"}}</span>
                             <div id="kick-dialog-players"></div>
-                            <button onclick="hideKickDialog()" class="dialog-button dialog-close-button">Close</button>
+                            <button onclick="hideKickDialog()" class="dialog-button dialog-close-button">{{.Translate "Close"}}</button>
                         </div>
                     </div>
 
                     <div id="center-dialog-container">
                         <div id="reconnect-dialog" class="center-dialog">
-                            <span id="game-over-dialog-title" class="dialog-title">Connection lost!</span>
-                            <p>Attempting to reconnect ...</p>
-                            <p>Make sure your internet connection works.<br/>If the problem persists, contact the webmaster.</p>
+                            <span id="game-over-dialog-title" class="dialog-title">{{.Translate "Connection lost!"}}</span>
+                            <p>{{.Translate "Attempting to reconnect"}} ...</p>
+                            <p>{{.Translate "Make sure your internet connection works"}}.<br/>{{.Translate "If the problem persists, contact the webmaster"}}.</p>
                         </div>
                     </div>
                 </div>
                 <div id="toolbox">
                     <input class="toolbox-group" type="color" id="color-picker" onchange="setColor()" value="#000000"
-                            alt="Current color (Click to change)" title="Current color (Click to change)">
+                            alt="{{.Translate "Current color (Click to change)"}}" title="{{.Translate "Current color (Click to change)"}}">
                     <div class="color-button-container toolbox-group">
                         <!-- These buttons use !important for their color in order
                         to prevent hover and active colors to appear. -->
@@ -188,7 +188,7 @@
                                 onmousedown="document.getElementById('tool-type-fill').click()"
                                 onmouseup="document.getElementById('tool-type-fill').click()"
                                 class="line-width-button-content">
-                                <img alt="Fill" title="Fill tool" src="/resources/fill.svg" width="40px"
+                                <img alt="Fill" title="{{.Translate "Fill tool"}}" src="/resources/fill.svg" width="40px"
                                     height="40px"/>
                             </div>
                         </label>
@@ -199,7 +199,7 @@
                                 onmousedown="document.getElementById('tool-type-rubber').click()"
                                 onmouseup="document.getElementById('tool-type-rubber').click()"
                                 class="line-width-button-content">
-                                <img alt="Rubber" title="Rubber tool" src="/resources/rubber.svg" width="40px"
+                                <img alt="Rubber" title="{{.Translate "Rubber tool"}}" src="/resources/rubber.svg" width="40px"
                                     height="40px"/>
                             </div>
                         </label>
@@ -252,7 +252,7 @@
                     <!--We won't make this button easier to click, as there's no going back. -->
                     <button class="canvas-button toolbox-group" style="font-size: 2rem;"
                             onclick="clearCanvasAndSendEvent()"
-                            alt="Clear the canvas" title="Clear the canvas">🗑
+                            alt="Clear the canvas" title="{{.Translate "Clear the canvas"}}">🗑
                     </button>
                 </div>
             </div>
@@ -261,7 +261,7 @@
         <div id="chat">
             <div id="message-container"></div>
             <form class="message-input-form" onsubmit="return sendMessage()">
-                <input id="message-input" type="text" autocomplete="off" placeholder="Type your message"/>
+                <input id="message-input" type="text" autocomplete="off" placeholder="{{.Translate "Type your message"}}"/>
             </form>
         </div>
     </div>
@@ -356,7 +356,7 @@
 
     function showKickDialog() {
         if (votekickEnabled !== true) {
-            alert("Votekicking isn't enabled in this lobby.");
+            alert("{{.Translate "Votekicking isn't enabled in this lobby"}}.");
             return;
         }
 
@@ -379,7 +379,7 @@
     }
 
     function showNameChangeDialog() {
-        let choice = prompt("Please choose your new name. Clearing the name will assign you a new random name.", ownName);
+        let choice = prompt("{{.Translate "Please choose your new name"}}. {{.Translate "Clearing the name will assign you a new random name"}}.", ownName);
         //Hitting cancel results in null.
         //Since we pre fill the dialog with the current name, empty means that
         //it has been cleared on purpose.
@@ -700,9 +700,9 @@
                         + '</div>';
                     if (player.id === ownID) {
                         if (player.rank == 1) {
-                            gameOverDialogTitle.innerHTML = "Picasso, is it you?";
+                            gameOverDialogTitle.innerHTML = "{{.Translate "Picasso, is it you?"}}";
                         } else {
-                            gameOverDialogTitle.innerHTML = "Next time you'll win!";
+                            gameOverDialogTitle.innerHTML = "{{.Translate "Next time you'll win!"}}";
                         }
                     }
                 }
@@ -713,24 +713,24 @@
             playWav('/resources/plop.wav');
 
             if (parsed.data === ownID) {
-                applyMessage("correct-guess-message", "System", "You have correctly guessed the word.")
+                applyMessage("correct-guess-message", "{{.Translate "System"}}", "{{.Translate "You have correctly guessed the word"}}.")
             } else {
                 for (let i = 0; i < cachedPlayers.length; i++) {
                     let player = cachedPlayers[i];
                     if (player.id === parsed.data) {
-                        applyMessage("correct-guess-message", "System", player.name + " correctly guessed the word.")
+                        applyMessage("correct-guess-message", "{{.Translate "System"}}", player.name + " {{.Translate "correctly guessed the word"}}.")
                         break;
                     }
                 }
             }
         } else if (parsed.type === "close-guess") {
-            applyMessage("close-guess-message", "System", "'"+ parsed.data + "'' is very close.")
+            applyMessage("close-guess-message", "{{.Translate "System"}}", "'"+ parsed.data + "'' {{.Translate "is very close"}}.")
         } else if (parsed.type === "update-wordhint") {
             applyWordHints(parsed.data);
         } else if (parsed.type === "message") {
             applyMessage("", parsed.data.author, parsed.data.content);
         } else if (parsed.type === "system-message") {
-            applyMessage("system-message", "System", parsed.data);
+            applyMessage("system-message", "{{.Translate "System"}}", parsed.data);
         } else if (parsed.type === "non-guessing-player-message") {
             applyMessage("correct-guess-message", parsed.data.author, parsed.data.content);
         } else if (parsed.type === "line") {
@@ -763,9 +763,9 @@
 
             if (parsed.data.previousWord !== null) {
                 if (parsed.data.previousWord === "") {
-                    applyMessage("system-message", "System", "Round over. No word was chosen.");
+                    applyMessage("system-message", "{{.Translate "System"}}", "{{.Translate "Round over - No word was chosen"}}.");
                 } else {
-                    applyMessage("system-message", "System", "Round over. Previous word was '"+parsed.data.previousWord+"'");
+                    applyMessage("system-message", "{{.Translate "System"}}", "{{.Translate "Round over - Previous word was"}} '"+parsed.data.previousWord+"'");
                 }
             }
 
@@ -778,17 +778,17 @@
             applyDrawData(parsed.data);
         } else if (parsed.type === "kick-vote") {
             if (parsed.data.playerId !== ownID) {
-                let kickMessage = "("+parsed.data.voteCount+"/"+parsed.data.requiredVoteCount+") players voted to kick "+parsed.data.playerName+".";
+                let kickMessage = "("+parsed.data.voteCount+"/"+parsed.data.requiredVoteCount+") {{.Translate "players voted to kick"}} "+parsed.data.playerName+".";
                 if (parsed.data.voteCount >= parsed.data.requiredVoteCount) {
-                    kickMessage += " Player has been kicked.";
+                    kickMessage += " {{.Translate "Player has been kicked"}}.";
                 }
-                applyMessage("system-message", "System", kickMessage);
+                applyMessage("system-message", "{{.Translate "System"}}", kickMessage);
             }
         } else if (parsed.type === "owner-change") {
             ownerID = parsed.data.playerId;
-            applyMessage("system-message", "System", parsed.data.playerName + " is the new lobby owner.");
+            applyMessage("system-message", "{{.Translate "System"}}", parsed.data.playerName + " {{.Translate "is the new lobby owner"}}.");
         } else if (parsed.type === "drawer-kicked") {
-            applyMessage("system-message", "System", "Since the kicked player has been drawing, none of you will get any points this round.");
+            applyMessage("system-message", "{{.Translate "System"}}", "{{.Translate "Since the kicked player has been drawing, none of you will get any points this round"}}.");
         }
     };
 
@@ -841,10 +841,10 @@
 
     window.setInterval(function () {
         if (roundEndTime >= 0) {
-            timeLeft.innerText = "Time Left: " + Math.floor(roundEndTime / 1000);
+            timeLeft.innerText = '{{.Translate "Time Left"}}: ' + Math.floor(roundEndTime / 1000);
             roundEndTime -= 500;
         } else {
-            timeLeft.innerText = "Time Left: ∞";
+            timeLeft.innerText = '{{.Translate "Time Left"}} ∞';
         }
     }, 500);
 
@@ -892,7 +892,7 @@
                 '<div class="score-and-status">' +
                 '<div>' +
                 '<span class="playerscore">' + player.score + '</span>' +
-                '<span class="last-turn-score">(Last turn: ' + player.lastScore + ')</span>' +
+                '<span class="last-turn-score"> ({{.Translate "Last turn:"}} ' + player.lastScore + ')</span>' +
                 '</div>';
             if (player.state === "drawing") {
                 newPlayerElement += '<span>✏️</span>';
@@ -905,7 +905,7 @@
     }
 
     function applyRounds(round, maxRound) {
-        roundsSpan.innerText = 'Round ' + round + ' of ' + maxRound;
+        roundsSpan.innerText = '{{.Translate "Round"}} ' + round + ' {{.Translate "of"}} ' + maxRound;
     }
 
     function applyWordHints(wordHints) {
